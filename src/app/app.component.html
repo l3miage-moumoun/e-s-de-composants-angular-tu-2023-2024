@@ -1,12 +1,15 @@
 <h1>TP Entrées et sorties de composants</h1>
 <pre>
     <app-css-styler
-        [cssStyle]="_sigRacine()"
-        (cssStyleChange)="_sigRacine.set($event)"
+        [cssStyle]="sigRacine()"
+        (cssStyleChange)="updateCssStyle($event)"
         ></app-css-styler>
-    <div class="stylée" [style]="_sigRacine()">
-        
-    </div>
+    
+    <div class="stylée" [style]="sigRacine()"></div>
 </pre>
 <button (click)="essaiChange()">Changer le style...</button>
-<pre>{{_sigRacine()|json}}</pre>
+<pre>{{sigRacine()|json}}</pre>
+<app-css-styler
+[cssStyle]="sigRacine()"
+(cssStyleChange)="updateCssStyle($event)"
+></app-css-styler>

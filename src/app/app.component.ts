@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, Input, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, computed, signal } from '@angular/core';
 import { CssStyle, defaultStyle } from './data';
 
 @Component({
@@ -8,12 +8,13 @@ import { CssStyle, defaultStyle } from './data';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  public readonly _sigRacine = signal<CssStyle>(defaultStyle);
-  /*public cssStylerComponent : CssStylerComponent = {cssStyle : this._sigRacine()} */
+  private readonly _sigRacine = signal<CssStyle>(defaultStyle);
+  public readonly sigRacine = computed<CssStyle>( () => this._sigRacine() );
 
-  @Input()
-    get style(): CssStyle { return this._sigRacine() }
-
+  updateCssStyle(css: CssStyle): void {
+    this._sigRacine.set(css);
+  }
+  
   essaiChange() {
     this._sigRacine.set({
       backgroundColor: "#ff0000",

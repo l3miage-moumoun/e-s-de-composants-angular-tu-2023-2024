@@ -10,11 +10,27 @@ import { outputAst } from '@angular/compiler';
 })
 export class CssStylerComponent {
 
-  @Input() cssStyle: CssStyle = defaultStyle;
+  @Input({ required: true }) cssStyle!: CssStyle; //  = defaultStyle;
   @Output() cssStyleChange = new EventEmitter<CssStyle>();
 
-  public update(u : Partial<CssStyle>):void {
+  get borderRadius(): number {
+    return parseInt(this.cssStyle.borderRadius);
+  }
 
+  get borderUnit(): "%" | "px" {
+    const L = /(px|%)$/.exec(this.cssStyle.borderRadius);
+    if (L === null) {
+      console.error("Invalid border radius unit !!!! Comment est ce possible ???");
+      return "px";
+    }
+    return L[0] as "%" | "px";
+  }
+
+  public update(u : Partial<CssStyle>):void {
     this.cssStyleChange.emit({...this.cssStyle, ...u});
+  }
+
+  updateRadius(v: number, u: "%" | "px"): void {
+    this.update({borderRadius: `${v}${u}`});
   }
 }
